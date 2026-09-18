@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Da li mrzis muskarce?</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-image: url('slicica.jpg');
+    background-repeat: repeat;
+  }
+
+  body.revealed {
+    background-image: url('boljaslicica.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .question {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(24px, 6vw, 48px);
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 2px red;
+    text-stroke: 2px red;
+    text-shadow:
+      -2px -2px 0 red,
+       2px -2px 0 red,
+      -2px  2px 0 red,
+       2px  2px 0 red;
+    margin: 0;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+  }
+
+  button {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(18px, 4vw, 28px);
+    font-weight: bold;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 40px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  #da.teleporting {
+    position: fixed;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <p class="question" id="question">Da li mrzis muskarce?</p>
+    <div class="buttons">
+      <button id="da">DA</button>
+      <button id="ne">NE</button>
+    </div>
+  </div>
+
+<script>
+  var daButton = document.getElementById('da');
+  var neButton = document.getElementById('ne');
+  var question = document.getElementById('question');
+
+  function teleportDa() {
+    var w = daButton.offsetWidth;
+    var h = daButton.offsetHeight;
+
+    if (!daButton.classList.contains('teleporting')) {
+      daButton.style.width = w + 'px';
+      daButton.style.height = h + 'px';
+      daButton.classList.add('teleporting');
+    }
+
+    var maxX = window.innerWidth - w;
+    var maxY = window.innerHeight - h;
+    var x = Math.random() * Math.max(maxX, 0);
+    var y = Math.random() * Math.max(maxY, 0);
+    daButton.style.left = x + 'px';
+    daButton.style.top = y + 'px';
+  }
+
+  daButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    teleportDa();
+  });
+
+  neButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    question.textContent = 'Znao sam';
+    document.body.classList.add('revealed');
+  });
+</script>
+
+</body>
+</html>
